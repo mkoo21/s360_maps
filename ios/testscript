@@ -1,0 +1,12 @@
+#!/bin/bash
+
+input="$(<Podfile)"
+regex1="project '([[:alnum:]]+).xcodeproj'"
+
+if [[ "$input" =~ $regex1 ]]
+then 
+    name="${BASH_REMATCH[1]}"
+    echo "$name"
+else
+    echo "No matches"
+fi

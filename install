@@ -1,0 +1,49 @@
+#!/bin/bash
+
+#npm dependencies (DO NOT USE REACT-NATIVE LINK)
+npm i --save events
+npm i react-native-calendar-picker
+npm i react-native-swiper
+npm i https://github.com/ForceDotComLabs/react.force.git
+npm i redux
+react-native link redux
+npm i react-redux
+react-native link react-redux
+npm i redux-logger
+react-native link redux-logger
+npm i redux-thunk
+react-native link redux-thunk
+npm i react-native-fetch-blob
+react-native link react-native-fetch-blob
+npm i react-native-geocoder
+react-native link react-native-geocoder
+npm i https://github.com/mkoo21/react-native-mail
+react-native link react-native-mail
+npm i https://github.com/aluksidadi/react-native-quick-look.git
+react-native link react-native-quick-look
+npm i react-native-side-menu
+react-native link react-native-side-menu
+npm i react-native-sortable-listview
+react-native link react-native-sortable-listview
+npm i react-native-star-rating
+react-native link react-native-star-rating
+npm i react-native-video
+react-native link react-native-video
+npm i https://github.com/ForceDotComLabs/react.force.base.theme.git#master
+react-native link react.force.base.theme
+npm i https://github.com/ForceDotComLabs/react.force.data.git
+react-native link react.force.data
+npm i https://github.com/ForceDotComLabs/react.force.datacontainer.git
+react-native link react.force.datacontainer
+npm i https://github.com/forceDotComLabs/react.force.layout.git
+react-native link react.force.layout
+
+
+#npm dependencies that support cocoapods (add them to podfile)
+npm i react-native-vector-icons
+npm i react-native-code-push
+npm i react-native-maps
+npm i react-native-fs
+
+#Cocoapods
+cd ios && pod install

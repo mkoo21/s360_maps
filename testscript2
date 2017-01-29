@@ -1,0 +1,3 @@
+#!/bin/bash
+PROJECT_NAME=$(awk -F"[ '.]+" '$1 == "project"{print $2}' ios/Podfile)
+echo $PROJECT_NAME
