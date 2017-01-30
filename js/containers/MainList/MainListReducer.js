@@ -1,41 +1,35 @@
 import {actionTypes as MainListActions} from './actions';
 
 const initialState = {
-    selected: [],
+    selected: {},
     listData: [],
-    Object_API_Name: "Opportunity"
+    Object_API_Name: "Opportunity",
+    nameField: "Name",
+    descField: "Description"
 }
 
 export default (state = initialState, action) => {
     //handle actions
     switch(action.type){
-        case MainListActions.INIT_LIST_ARRAY:
-            //initialize/fill an array size action.size with false
-            if(action.size === 'undefined'){
-                console.log('ACTION_ERROR: INIT_LIST_ARRAY dispatch could not find required array size');
-                return state;
-            }
-            var newLogical = [];
-            while(action.size--){
-                newLogical.push(false);
-            }
-            return {
-                ...state,
-                selected: newLogical,
-
-            }
         case MainListActions.SELECT:
-            //Flip the selected value of this item
-            if(action.index >= state.selected.length){
-                console.log('ACTION_ERROR: SELECT dispatch attempted to flip out of bounds index');
-                return state;
-            } 
+            //If an entry for this SFID does not exist, create it and set it to true. Else flip its value
             newSelected = state.selected;
-            newSelected[action.index] = !state.selected[action.index];
+            if(!(action.rowData.SFID in state.selected)){
+                newSelected[action.rowData.SFID] = action.rowData;
+                newSelected[action.rowData.SFID].isSelected = true;
+            } 
+            else {
+                newSelected[action.rowData.SFID].isSelected = !state.selected[action.rowData.SFID].isSelected;
+            }
             return {
                 ...state,
                 selected: newSelected
             };
+        case MainListActions.RESET_SELECTED:
+        return {
+            ...state,
+            selected: {}
+        }
         case MainListActions.SET_RECORDS:
             //Store data associated with a new opportunity
             if(action.data === 'undefined') {
@@ -49,9 +43,10 @@ export default (state = initialState, action) => {
         case MainListActions.SET_CURRENT_OBJECT:
             return {
                 ...state,
-                Object_API_Name: action.API_name
+                Object_API_Name: action.API_name,
+                nameField: action.nameField || "Name",
+                descField: action.descField || "Description"
             };
-
         default:
             return state;
     }   

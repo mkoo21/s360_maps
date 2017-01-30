@@ -4,33 +4,37 @@ import{
     StyleSheet,
     PixelRatio
 } from 'react-native';
+
 module.exports = StyleSheet.create({
+    page: {
+        flex:1,
+        flexDirection:'column'
+    },  
+    navbarPadding: {
+        height:80
+    },
     listContainer: {
-        top:95,
         flex:1,
         marginLeft:10,
+        marginRight:10
     },
     topBorder: {
         backgroundColor: 'rgba(0, 0, 0, 0.3)',
-        height: 3 / PixelRatio.get(),
+        height: 3 / PixelRatio.get()
     },
     row: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: 'white',
-        flexDirection: 'row',
-        padding: 12,
+        flexDirection:'row',
+        height:45
     },
     cellBorder: {
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
-        // Trick to get the thinest line the device can displayfor
+        // Trick to get the thinest line the device can display for
         height: 2 / PixelRatio.get(),
-        marginLeft: 4,
+        marginLeft: 4
     },
     mapButton: {
         width:50,
         height:25,
-        top:80,
         left:20,
         position:'relative',
         backgroundColor:'#84aae8',

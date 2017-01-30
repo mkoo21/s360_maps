@@ -23,8 +23,8 @@ var map = React.createClass({
         var region = {
             latitude: (Math.max.apply(null,lats) + Math.min.apply(null,lats)) / 2,
             longitude: (Math.max.apply(null,longs) + Math.min.apply(null,longs)) / 2,
-            latitudeDelta: (Math.max.apply(null,lats) - Math.min.apply(null,lats)) * 1.5,
-            longitudeDelta: (Math.max.apply(null,longs) - Math.min.apply(null,longs)) * 1.5
+            latitudeDelta: (Math.max.apply(null,lats) - Math.min.apply(null,lats)) * 1.5 || 0.01,
+            longitudeDelta: (Math.max.apply(null,longs) - Math.min.apply(null,longs)) * 1.5 || 0.01
         };
         return(
             <MapView 

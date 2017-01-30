@@ -11,9 +11,9 @@ import {
 
 var ListRow = React.createClass({
     set_current_object() {
-        if(this.props.rowData.API_Name) {
+        if(this.props.rowData.Object_API_Name__c) {
             //Set mainlist target object to the one referenced in this row, then close the sidemenu
-            this.props.setCurrentObject(this.props.rowData.API_Name);
+            this.props.setCurrentObject(this.props.rowData.Object_API_Name__c, this.props.rowData.Object_Name_Field__c, this.props.rowData.Object_Desc_Field__c);
             this.props.closeSideMenu();
         }
     },
@@ -21,7 +21,7 @@ var ListRow = React.createClass({
         return (
             <TouchableOpacity style={styles.container} onPress={this.set_current_object}> 
                 <Text style={styles.text}>  
-                    {this.props.rowData.Name}
+                    {this.props.rowData.Object_Menu_Label__c}
                 </Text> 
             </TouchableOpacity>
         );

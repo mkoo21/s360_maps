@@ -1,21 +1,20 @@
 
 export const actionTypes = {
     SELECT: "SELECT",
-    INIT_LIST_ARRAY: "INIT_LIST_ARRAY",
+    RESET_SELECTED: "RESET_SELECTED",
     SET_RECORDS: "SET_RECORDS",
     SET_CURRENT_OBJECT: "SET_CURRENT_OBJECT"
 }
-export const select = (index) => {
+export const select = (rowData) => {
     return {
         type: actionTypes.SELECT,
-        index
+        rowData
     };
 };
 
-export const init_list_array = (size) => {
+export const reset_selected = () => {
     return {
-        type: actionTypes.INIT_LIST_ARRAY,
-        size
+        type: actionTypes.RESET_SELECTED,
     };
 };
 
@@ -24,18 +23,13 @@ export const set_records = (data) => {
         type: actionTypes.SET_RECORDS,
         data
     }
-}
+};
 
-export const reset_selections = () => {
+export const set_current_object = (API_name, nameField, descField) => {
     return {
-        //TODO?
-        type: "asdf"
+        type: actionTypes.SET_CURRENT_OBJECT,
+        API_name,
+        nameField,
+        descField
     }
-} 
-
-export const set_current_object = (API_name) => {
-    return {
-        type:actionTypes.SET_CURRENT_OBJECT,
-        API_name
-    }
-}
+};

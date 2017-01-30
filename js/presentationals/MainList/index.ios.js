@@ -10,6 +10,7 @@ import {
 import styles from './styles.ios';
 
 import ListRow from './ListRow';
+import SearchBar from './Searchbar';
 import {net, oauth} from 'react-native-force';
 
 import map from '../map';
@@ -24,35 +25,33 @@ var MainList = React.createClass({
         }
     },
     componentWillMount(){
+        this.props.resetSelected;
         this.setTargetObject();
     },
-    componentWillReceiveProps(nextprops) {
-        if(this.state.Object_API_Name != nextprops.Object_API_Name) this.setTargetObject(); // misleading name
-        // the important part is the datasource (diff datasource)
-    },
-    setTargetObject(){
-
-        var soql = 'SELECT Id, Name, Main_Office__Latitude__s, Main_Office__Longitude__s FROM ' + this.props.Object_API_Name;
+    setTargetObject(searchTerm = null){
+        var soql = 'SELECT Id, '+ this.props.nameField + ', ' + this.props.descField + ', Main_Office__Latitude__s, Main_Office__Longitude__s FROM ' + this.props.Object_API_Name;
+        if(searchTerm) soql += " WHERE Name LIKE '%" + searchTerm + "%'";
         net.query(soql,
             (response) => {
                 var records = response.records;
                 var data = [];
                 for (var i in records) {
                     data.push({ 
-                        name: records[i].Name,
+                        SFID: records[i].Id,  // let this be primary key
+                        name: records[i][this.props.nameField],
+                        desc: records[i][this.props.descField],
                         latitude: records[i].Main_Office__Latitude__s,
                         longitude: records[i].Main_Office__Longitude__s,
                         index: i
                     });
                 }
                 this.props.setRecords(data);
-                this.props.initializeSelectArray(records.length);
 
                 //set datasources
                 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
                 this.setState({
-                    Object_API_Name : this.props.Object_API_Name,
-                    dataSource : ds.cloneWithRows(data),
+                    Object_API_Name: this.props.Object_API_Name,
+                    dataSource: ds.cloneWithRows(data),
                     isFetching: false
                 });
             }
@@ -61,15 +60,15 @@ var MainList = React.createClass({
     openMap(){
         var markers = [];
         for(var i in this.props.selected){
-            if(this.props.selected[i]){
+            if(this.props.selected[i].isSelected){
                 markers.push({
-                    title:this.props.listData[i].name,
+                    title: this.props.selected[i].name,
                     latlng: {
-                        latitude: this.props.listData[i].latitude,
-                        longitude: this.props.listData[i].longitude
+                        latitude: this.props.selected[i].latitude,
+                        longitude: this.props.selected[i].longitude
                     },
-                    key: this.props.listData[i].index
-                })
+                    key: this.props.selected[i].SFID
+                });
             }
         }
         this.props.navigator.push({
@@ -82,15 +81,23 @@ var MainList = React.createClass({
             markers: markers
         });
     },
-
+    getSelectedStatus(SFID){
+        if(!(SFID in this.props.selected)) return false;
+        else return this.props.selected.SFID.isSelected;
+    },
     render() {
+        if(this.state.Object_API_Name != this.props.Object_API_Name) this.setTargetObject();
         if(this.state.isFetching) return null
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         return (
-            <View style={{flex:1}}>
-                <TouchableOpacity style={styles.mapButton} onPress={this.openMap}>
-                    <Text style={styles.mapText}> Map </Text>
-                </TouchableOpacity>
+            <View style={styles.page}>
+                <View style={styles.navbarPadding} />
+                <View style={styles.row}>
+                    <SearchBar windowWidth={this.props.windowWidth} search={this.setTargetObject} />
+                    <TouchableOpacity style={styles.mapButton} onPress={this.openMap}>
+                        <Text style={styles.mapText}> Map </Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.listContainer}>
                     <View style={styles.topBorder} />
                     <ListView
@@ -107,7 +114,7 @@ var MainList = React.createClass({
     renderRow(rowData) {
         return (
                 <View>
-                    <ListRow rowData={rowData} changeSelection={this.props.changeSelection}/>
+                    <ListRow rowData={rowData} changeSelection={this.props.changeSelection} getSelectedStatus={this.getSelectedStatus}/>
                     <View style={styles.cellBorder} />
                 </View>
         );

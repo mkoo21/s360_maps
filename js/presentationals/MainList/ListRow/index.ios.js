@@ -2,10 +2,12 @@
 'use-strict';
 import React from 'react';
 import {
+    View,
     Text,
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 module.exports = React.createClass({
     //State can be controlled from redux store and passed down as a prop
@@ -22,23 +24,38 @@ module.exports = React.createClass({
             });
         }
     },
+    componentDidMount(){
+        this.setState({
+            selected: this.props.getSelectedStatus(this.props.rowData.SFID)
+        });
+    },
     handlePress(){
         var nextState = !this.state.selected
         this.setState({
             selected: nextState
         });
-        this.props.changeSelection(this.props.rowData.index);
+        this.props.changeSelection(this.props.rowData);
     },
     render() {
         return (
             <TouchableOpacity 
                 onPress={this.handlePress} 
-                style={ this.state.selected ? [styles.container, styles.selectedContainer] : styles.container }>
-                <Text 
-                    style={ this.state.selected ? styles.selectedText : styles.text } 
-                    numberOfLines={1}> 
-                    {this.props.rowData.name} 
-                </Text>
+                style={ this.state.selected ? [styles.container, styles.selectedContainer] : styles.container } >
+                <View style={styles.horizontalView} >
+                    <View style={styles.verticalView} >
+                        <Text 
+                            style={ this.state.selected ? styles.selectedName : styles.nameText } 
+                            numberOfLines={1} > 
+                            {this.props.rowData.name} 
+                        </Text>
+                        <Text
+                            style={ this.state.selected ? styles.selectedDesc : styles.descText } 
+                            numberOfLines={1}>
+                            {this.props.rowData.desc ? this.props.rowData.desc : "No Description"}
+                        </Text>
+                    </View>
+                    <Icon name='info-circle' size={30} color='gray'/>
+                </View>
             </TouchableOpacity>
         );
             
@@ -53,14 +70,37 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 12,
     },
-    text:{
-        
+    horizontalView:{
+        flexDirection:'row',
+        justifyContent:'space-between'
+    },
+    verticalView: {
+        height: 60,
+        flexDirection:'column'
+    },
+    nameText:{
+        fontSize:20,
+        paddingBottom:10,
+        paddingLeft:10
+    },
+    descText: {
+        fontSize:15,
+        color:'gray',
+        paddingLeft:10
     },
     selectedContainer:{
         backgroundColor:'#4286f4'
     },
-    selectedText:{
+    selectedName:{
         color:'white',
-        fontWeight:'bold'
+        fontWeight:'bold',
+        fontSize:20,
+        paddingBottom:10,
+        paddingLeft:10
+    },
+    selectedDesc:{
+        color:'white',
+        fontSize:15,
+        paddingLeft:10
     }
 });

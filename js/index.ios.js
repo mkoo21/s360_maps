@@ -46,7 +46,7 @@ var App = React.createClass({
         })
     },
 
-    render: function() {
+    render() {
         if (!this.state.authenticated)
             return (<View/>); // Show splash screen if you have one
         return (
