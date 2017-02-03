@@ -11,8 +11,8 @@ import {
     Dimensions,
     Animated
 } from 'react-native';
-
 import ListRow from './ListRow';
+import LinearGradient from 'react-native-linear-gradient';
 
 //Presentational component for MainList
 var SideMenu = React.createClass({
@@ -32,7 +32,7 @@ var SideMenu = React.createClass({
                     }
                 ]}>
                     <View style={styles.logoContainer}> 
-                        <Image source={require('../../../static/logo-template-256.jpg')} style={styles.logo} /> 
+                        <Image source={require('../../../static/globe-icon.jpg')} style={styles.logo} /> 
                     </View>
                     <View style={styles.categoryList}>
                         <ListView 
@@ -47,6 +47,7 @@ var SideMenu = React.createClass({
 
 var styles = StyleSheet.create({
     //loosely inspired by google maps
+    //will overlay the entire screen
     page : {
         position:'absolute',
         top:0,
@@ -72,8 +73,8 @@ var styles = StyleSheet.create({
         justifyContent:'center'
     },
     logo : {
-        height:80,
-        width:80
+        height:120,
+        width:120
     },
     categoryList: {
         flex:5

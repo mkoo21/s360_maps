@@ -8,6 +8,7 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
 var ListRow = React.createClass({
     set_current_object() {
@@ -20,9 +21,11 @@ var ListRow = React.createClass({
     render() {
         return (
             <TouchableOpacity style={styles.container} onPress={this.set_current_object}> 
-                <Text style={styles.text}>  
-                    {this.props.rowData.Object_Menu_Label__c}
-                </Text> 
+                <LinearGradient style={styles.container} colors={['#ffffff', '#f2f2f2', '#e6e6e6']} start={{x:0.5,y:0}} end={{x:1.0,y:1.0}}>
+                    <Text style={styles.text}>  
+                        {this.props.rowData.Object_Menu_Label__c}
+                    </Text> 
+                </LinearGradient>
             </TouchableOpacity>
         );
     }
@@ -33,10 +36,14 @@ var styles = StyleSheet.create({
         height:50,
         padding:20,
         flexDirection:'row',
-        alignItems:'center'
+        alignItems:'center',
+        flex:1
     },
     text: {
-        fontSize:15
+        fontSize:20,
+        fontFamily:'Apple SD Gothic Neo',
+        paddingLeft:10,
+        backgroundColor:'rgba(0,0,0,0)'
     }
 });
 

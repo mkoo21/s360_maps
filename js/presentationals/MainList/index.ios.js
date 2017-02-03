@@ -21,7 +21,8 @@ var MainList = React.createClass({
             Object_API_Name: null,
             rawData: [],
             dataSource: null,
-            isFetching: true
+            isFetching: true,
+            filterSelected:false
         }
     },
     componentWillMount(){
@@ -30,7 +31,7 @@ var MainList = React.createClass({
     },
     setTargetObject(searchTerm = null){
         var soql = 'SELECT Id, '+ this.props.nameField + ', ' + this.props.descField + ', Main_Office__Latitude__s, Main_Office__Longitude__s FROM ' + this.props.Object_API_Name;
-        if(searchTerm) soql += " WHERE Name LIKE '%" + searchTerm + "%'";
+        if(searchTerm) soql += " WHERE " + this.props.nameField + " LIKE '%" + searchTerm + "%'";
         net.query(soql,
             (response) => {
                 var records = response.records;
@@ -85,6 +86,15 @@ var MainList = React.createClass({
         if(!(SFID in this.props.selected)) return false;
         else return this.props.selected.SFID.isSelected;
     },
+    filterSelected(){
+        if(!this.state.selected){ //we are switching from state 'do not filter' to 'filter' -> implement filter logic in this transition
+            
+        }
+        //Flip state
+        this.setState({
+            filterSelected : !this.state.filterSelected
+        })
+    },
     render() {
         if(this.state.Object_API_Name != this.props.Object_API_Name) this.setTargetObject();
         if(this.state.isFetching) return null
@@ -92,13 +102,18 @@ var MainList = React.createClass({
         return (
             <View style={styles.page}>
                 <View style={styles.navbarPadding} />
-                <View style={styles.row}>
-                    <SearchBar windowWidth={this.props.windowWidth} search={this.setTargetObject} />
-                    <TouchableOpacity style={styles.mapButton} onPress={this.openMap}>
-                        <Text style={styles.mapText}> Map </Text>
+                <View style={styles.rowApart}>
+                    <View style={styles.row}>
+                        <SearchBar windowWidth={this.props.windowWidth} search={this.setTargetObject} />
+                        <TouchableOpacity style={styles.mapButton} onPress={this.openMap}>
+                            <Text style={styles.mapText}> Map </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity style={ styles.selectedFilter } onPress={() => this.setState({ filterSelected : !this.state.filterSelected})}>
+                        <Text style={ !this.state.filterSelected ? styles.selectFilterText : [styles.selectFilterText, styles.highlightedSelectFilterText] }> Selected </Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.listContainer}>
+                <View style={styles.listContainer} >
                     <View style={styles.topBorder} />
                     <ListView
                         dataSource={this.state.dataSource}
@@ -112,9 +127,10 @@ var MainList = React.createClass({
     },
 
     renderRow(rowData) {
+        var rowIsSelected = rowData.SFID in this.props.selected && this.props.selected[rowData.SFID].isSelected;
         return (
                 <View>
-                    <ListRow rowData={rowData} changeSelection={this.props.changeSelection} getSelectedStatus={this.getSelectedStatus}/>
+                    <ListRow rowData={rowData} changeSelection={this.props.changeSelection} getSelectedStatus={this.getSelectedStatus} filterSelected={this.state.filterSelected} rowIsSelected={rowIsSelected} />
                     <View style={styles.cellBorder} />
                 </View>
         );

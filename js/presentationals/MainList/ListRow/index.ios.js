@@ -37,6 +37,7 @@ module.exports = React.createClass({
         this.props.changeSelection(this.props.rowData);
     },
     render() {
+        if(this.props.filterSelected && !this.props.rowIsSelected) return null;
         return (
             <TouchableOpacity 
                 onPress={this.handlePress} 
@@ -54,7 +55,9 @@ module.exports = React.createClass({
                             {this.props.rowData.desc ? this.props.rowData.desc : "No Description"}
                         </Text>
                     </View>
-                    <Icon name='info-circle' size={30} color='gray'/>
+                    <TouchableOpacity>
+                        <Icon name='info-circle' size={30} color={ this.state.selected ? 'white': 'gray'} style={{paddingRight:10}}/>
+                    </TouchableOpacity>
                 </View>
             </TouchableOpacity>
         );
@@ -72,7 +75,9 @@ var styles = StyleSheet.create({
     },
     horizontalView:{
         flexDirection:'row',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
+        flex:1,
+        alignItems:'center'
     },
     verticalView: {
         height: 60,
@@ -102,5 +107,9 @@ var styles = StyleSheet.create({
         color:'white',
         fontSize:15,
         paddingLeft:10
+    },
+    infoIcon:{
+        paddingRight:10,
+
     }
 });

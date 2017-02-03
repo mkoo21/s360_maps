@@ -11,7 +11,7 @@ module.exports = StyleSheet.create({
         flexDirection:'column'
     },  
     navbarPadding: {
-        height:80
+        height:100
     },
     listContainer: {
         flex:1,
@@ -24,13 +24,19 @@ module.exports = StyleSheet.create({
     },
     row: {
         flexDirection:'row',
-        height:45
+        height:60
+    },
+    rowApart: {
+        flexDirection:'row',
+        height:60,
+        justifyContent:'space-between'
     },
     cellBorder: {
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
         // Trick to get the thinest line the device can display for
         height: 2 / PixelRatio.get(),
-        marginLeft: 4
+        marginLeft: 20,
+        marginRight: 20
     },
     mapButton: {
         width:50,
@@ -44,5 +50,21 @@ module.exports = StyleSheet.create({
     },
     mapText:{
         color:'white'
+    },
+    selectedFilter:{
+        marginTop:5,
+        marginRight:20,
+        height:25,
+        width:90
+    },
+
+    selectFilterText:{
+        fontSize:15,
+        color:'gray'
+    },
+    highlightedSelectFilterText:{
+        color:'#84aae8',
+        fontWeight:'bold',
+        fontSize:18        
     }
 });

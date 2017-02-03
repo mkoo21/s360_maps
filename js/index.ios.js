@@ -10,7 +10,7 @@ import {
 import { Provider } from 'react-redux';
 
 import RootContainer from './containers/RootContainer/container';
-import {oauth, forceClient} from 'react-native-force';
+import { oauth, forceClient } from 'react-native-force';
 import MapView from 'react-native-maps';
 import mainStore from './appStore';
 import codePush from 'react-native-code-push';
@@ -56,6 +56,5 @@ var App = React.createClass({
         ); 
     }
 });
-
 
 module.exports = App;
